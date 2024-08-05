@@ -8,9 +8,9 @@ class User {
     string password;
 
   public:
-    User(string u, string p) {
-      username = u;
-      password = p;
+    User(string username, string password) {
+      this -> username = username; 
+      this -> password = password; 
     }
 
     void setPassword(string p) {
@@ -37,10 +37,10 @@ class Order {
     string status;
 
   public:
-    Order(int id, string details) {
-      orderId = id;
-      orderDetails = details;
-      status = "Placed";
+    Order(int orderId, string orderDetails) {
+      this -> orderId = orderId; 
+      this -> orderDetails = orderDetails; 
+      this -> status = "Placed"; 
     }
 
     void updateStatus(string newStatus) {
