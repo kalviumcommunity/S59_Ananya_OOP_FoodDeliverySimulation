@@ -1,95 +1,43 @@
 #include <iostream>
 #include <string>
+#include "User.cpp"
+#include "Order.cpp"
 using namespace std;
 
-class User {
-  private:
-    string username;
-    string password;
+int main() { 
+  string u, p;
+  int n;
 
-  public:
-    User(string username, string password) {
-      this -> username = username; 
-      this -> password = password; 
-    }
-
-    void setPassword(string p) {
-      password = p;
-    }
-
-    string getUsername() {
-      return username;
-    }
-
-    string getPassword() {
-      return password;
-    }
-
-    void displayUserDetails() {
-      cout << "Username: " << username << endl;
-    }
-};
-
-class Order {
-  private:
-    int orderId;
-    string orderDetails;
-    string status;
-
-  public:
-    Order(int orderId, string orderDetails) {
-      this -> orderId = orderId; 
-      this -> orderDetails = orderDetails; 
-      this -> status = "Placed"; 
-    }
-
-    void updateStatus(string newStatus) {
-      status = newStatus;
-    }
-
-    string getOrderDetails() {
-      return orderDetails;
-    }
-
-    string getStatus() {
-      return status;
-    }
-
-    int getOrderId() {
-      return orderId;
-    }
-
-    void displayOrderDetails() {
-      cout << "Order ID: " << orderId << endl;
-      cout << "Order Details: " << orderDetails << endl;
-      cout << "Order Status: " << status << endl;
-    }
-};
-
-int main() {
-
-  string u, p, o;
-
-  cout << "Welcome to this food delivery simulation !" << endl << "Enter your user details" << endl;
+  cout << "Welcome to this food delivery simulation!" << endl << "Enter your user details" << endl;
 
   cout << "Username: ";
   cin >> u;
-  cout << endl;
-
   cout << "Password: ";
   cin >> p;
-  cout << endl;        
 
   User user1(u, p);
   user1.displayUserDetails();
 
-  cout << "Place an order !" << endl;
-  cin.ignore();
-  cout << "Order Details: ";
-  getline(cin, o);
+  cout << "Enter the number of orders: ";
+  cin >> n;
+  cin.ignore(); 
 
-  Order order1(1, o);  
-  order1.displayOrderDetails();
+  Order* orders = new Order[n];
+
+  for (int i = 0; i < n; ++i) {
+    string o;
+    cout << "Enter details for order " << (i + 1) << endl;
+    cout << "Order Details: ";
+    getline(cin, o);
+    orders[i] = Order(i + 1, o);
+  }
+
+  cout << endl << "Order Details:" << endl;
+  for (int i = 0; i < n; ++i) {
+    orders[i].displayOrderDetails();
+  }
+
+  delete[] orders;
 
   return 0;
 }
