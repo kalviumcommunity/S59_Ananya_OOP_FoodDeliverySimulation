@@ -37,5 +37,7 @@ int main() {
     orders[i].displayOrderDetails();
   }
 
+  delete[] orders;
+
   return 0;
 }
