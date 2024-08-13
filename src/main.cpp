@@ -5,39 +5,63 @@
 using namespace std;
 
 int main() { 
-  string u, p;
-  int n;
+  int n, role;
 
-  cout << "Welcome to this food delivery simulation!" << endl << "Enter your user details" << endl;
+  cout << "Welcome to this food delivery simulation!\nCreate an account to access all features" << endl;
 
-  cout << "Username: ";
-  cin >> u;
-  cout << "Password: ";
-  cin >> p;
+  //this is to know who is trying to enter (customer or owner)
+  cout << "Choose your role:\n 1. Customer\n 2. Restaurant Owner\nEnter your choice: ";
+  cin >> role;
 
-  User user1(u, p);
-  user1.displayUserDetails();
+  //if they are a customer
+  if (role == 1) {
+    string user, pass;
+    cout << "Enter username for Customer: ";
+    cin >> user;
+    cout << "Enter password for Customer: ";
+    cin >> pass;
+    Customer customer(user, pass);
+    customer.login();
+    customer.displayUserDetails();
+    
+    cout << "Enter the number of orders: ";
+    cin >> n;
+    cin.ignore(); 
 
-  cout << "Enter the number of orders: ";
-  cin >> n;
-  cin.ignore(); 
+    Order* orders = new Order[n];
 
-  Order* orders = new Order[n];
+    for (int i = 0; i < n; ++i) {
+      string o;
+      cout << "Enter details for order " << (i + 1) << endl;
+      cout << "Order Details: ";
+      getline(cin, o);
+      orders[i] = Order(i + 1, o);
+    }
 
-  for (int i = 0; i < n; ++i) {
-    string o;
-    cout << "Enter details for order " << (i + 1) << endl;
-    cout << "Order Details: ";
-    getline(cin, o);
-    orders[i] = Order(i + 1, o);
+    cout << endl << "Order Details:" << endl;
+    for (int i = 0; i < n; ++i) {
+      orders[i].displayOrderDetails();
+    }
+    delete[] orders;
   }
 
-  cout << endl << "Order Details:" << endl;
-  for (int i = 0; i < n; ++i) {
-    orders[i].displayOrderDetails();
+  //if they are an owner
+  else if (role == 2) {
+    string user, pass, restaurant;
+    int secret;
+    cout << "Enter username for Restaurant Owner: ";
+    cin >> user;
+    cout << "Enter password for Restaurant Owner: ";
+    cin >> pass;
+    cin.ignore();
+    cout << "Enter your restaurant name: ";
+    getline(cin, restaurant);
+    cout << "Enter your secret code: ";
+    cin >> secret;
+    RestaurantOwner owner(user, pass, restaurant, secret);
+    owner.login();
+    owner.displayUserDetails();
   }
-
-  delete[] orders;
 
   return 0;
 }
