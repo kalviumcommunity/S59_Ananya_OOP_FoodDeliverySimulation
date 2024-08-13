@@ -20,9 +20,11 @@ int main() {
     cin >> user;
     cout << "Enter password for Customer: ";
     cin >> pass;
-    Customer customer(user, pass);
-    customer.login();
-    customer.displayUserDetails();
+
+    //dynamically allocating memory
+    Customer* customer = new Customer(user, pass);
+    customer -> login();
+    customer -> displayUserDetails();
     
     cout << "Enter the number of orders: ";
     cin >> n;
@@ -42,7 +44,10 @@ int main() {
     for (int i = 0; i < n; ++i) {
       orders[i].displayOrderDetails();
     }
+
+    //erasing memory
     delete[] orders;
+    delete customer;
   }
 
   //if they are an owner
@@ -58,9 +63,14 @@ int main() {
     getline(cin, restaurant);
     cout << "Enter your secret code: ";
     cin >> secret;
-    RestaurantOwner owner(user, pass, restaurant, secret);
-    owner.login();
-    owner.displayUserDetails();
+
+    //dynamically alloting memory
+    RestaurantOwner* owner = new RestaurantOwner(user, pass, restaurant, secret);
+    owner -> login();
+    owner -> displayUserDetails();
+
+    //erasing memory
+    delete owner;
   }
 
   return 0;
