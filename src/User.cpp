@@ -54,6 +54,14 @@ private:
     static int numberOfOrders;
 public:
     Customer(string username, string password) : User(username, password, "Customer") {}
+
+    static int getTotalOrders() { return numberOfOrders; }
+
+    void placeOrder() {
+        orderCounter++;
+        numberOfOrders++;
+        cout << "Order placed successfully! Total orders by all customers: " << getTotalOrders() << endl;
+    }
 };
 
 int Customer :: orderCounter = 0;

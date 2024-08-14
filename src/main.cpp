@@ -45,6 +45,8 @@ int main() {
       orders[i].displayOrderDetails();
     }
 
+    customer -> placeOrder();
+
     //erasing memory
     delete[] orders;
     delete customer;
