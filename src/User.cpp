@@ -19,6 +19,9 @@ public:
     //destructor
     virtual ~User() {}
 
+    virtual void displayUserDetails() const = 0;
+    virtual void login() = 0;
+
     //mutator(setter methods)
     void setPassword(string p) {
         password = p;
@@ -29,32 +32,12 @@ public:
     }
 
     //accessors(getter methods)
-    string getUsername() {
+    string getUsername() const {
         return username;
     }
 
-    string getPassword() {
+    string getPassword() const {
         return password;
-    }
-
-    void displayUserDetails() {
-        cout << "Username: " << getUsername() << endl;
-    }
-
-    void login() {
-        string user, pass;
-        cout << "Enter username to login: ";
-        cin >> user;
-        cout << "Enter password for verification: ";
-        cin >> pass;
-
-        if (user == getUsername() && pass == getPassword()) {
-            cout << "Login successful! Logged in as " << role << endl;
-        } 
-        else {
-            cout << "Login failed! Incorrect credential(s)" << endl;
-            exit(0);
-        }
     }
 };
 
@@ -75,6 +58,25 @@ public:
         numberOfOrders++;
         cout << "Order placed successfully! Total orders by all customers: " << getTotalOrders() << endl;
     }
+
+    void displayUserDetails() const override {
+        cout << "Customer Username: " << getUsername() << endl;
+    }
+
+    void login() override {
+        string user, pass;
+        cout << "Enter username to login: ";
+        cin >> user;
+        cout << "Enter password for verification: ";
+        cin >> pass;
+
+        if (user == getUsername() && pass == getPassword()) {
+            cout << "\nLogin successful! Logged in as " << role << endl;
+        } else {
+            cout << "\nLogin failed! Incorrect credential(s)" << endl;
+            exit(0);
+        }
+    }
 };
 
 int Customer :: orderCounter = 0;
@@ -89,4 +91,24 @@ public:
     RestaurantOwner(string username, string password, string restaurant, int secret) : User(username, password, "RestaurantOwner"), restaurantName(restaurant), secretCode(secret) {}
     //destructor
     ~RestaurantOwner() {}
+
+    void displayUserDetails() const override {
+        cout << "Restaurant Owner Username: " << getUsername() << endl;
+        cout << "Restaurant Name: " << restaurantName << endl;
+    }
+
+    void login() override {
+        string user, pass;
+        cout << "Enter username to login: ";
+        cin >> user;
+        cout << "Enter password for verification: ";
+        cin >> pass;
+
+        if (user == getUsername() && pass == getPassword()) {
+            cout << "\nLogin successful! Logged in as " << role << endl;
+        } else {
+            cout << "\nLogin failed! Incorrect credential(s)" << endl;
+            exit(0);
+        }
+    }
 };
