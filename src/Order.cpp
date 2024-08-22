@@ -20,10 +20,16 @@ public:
     //destructor
     ~Order() {}
 
+    //mutator(setter methods)
     void updateStatus(string newStatus) {
         status = newStatus;
     }
 
+    void setOrderDetails(string details) {
+        orderDetails = details;
+    }
+
+    //accessors(getter methods))
     string getOrderDetails() {
         return orderDetails;
     }
@@ -37,8 +43,8 @@ public:
     }
 
     void displayOrderDetails() {
-        cout << "Order ID: " << orderId << endl;
-        cout << "Order Details: " << orderDetails << endl;
-        cout << "Order Status: " << status << endl;
+        cout << "Order ID: " << getOrderId() << endl;
+        cout << "Order Details: " << getOrderDetails() << endl;
+        cout << "Order Status: " << getStatus() << endl;
     }
 };

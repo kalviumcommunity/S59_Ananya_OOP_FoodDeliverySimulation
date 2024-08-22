@@ -17,10 +17,16 @@ public:
     //destructor
     virtual ~User() {}
 
+    //mutator(setter methods)
     void setPassword(string p) {
         password = p;
     }
 
+    void setUsername(string uname) {
+        username = uname;
+    }
+
+    //accessors(getter methods)
     string getUsername() {
         return username;
     }
@@ -30,7 +36,7 @@ public:
     }
 
     void displayUserDetails() {
-        cout << "Username: " << username << endl;
+        cout << "Username: " << getUsername() << endl;
     }
 
     void login() {
@@ -59,8 +65,9 @@ public:
     //destructor
     ~Customer() {}
 
+    //accessor(getter method)
     static int getTotalOrders() { return numberOfOrders; }
-
+    
     void placeOrder() {
         orderCounter++;
         numberOfOrders++;
