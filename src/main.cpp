@@ -47,7 +47,7 @@ int main() {
 
     customer -> placeOrder();
 
-    //erasing memory
+    //explicitly calling destructor r
     delete[] orders;
     delete customer;
   }
@@ -71,7 +71,7 @@ int main() {
     owner -> login();
     owner -> displayUserDetails();
 
-    //erasing memory
+    //explicitly calling destructor
     delete owner;
   }
 

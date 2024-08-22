@@ -14,6 +14,8 @@ public:
         this -> password = password;
         this -> role = role;
     }
+    //destructor
+    virtual ~User() {}
 
     void setPassword(string p) {
         password = p;
@@ -54,6 +56,8 @@ private:
     static int numberOfOrders;
 public:
     Customer(string username, string password) : User(username, password, "Customer") {}
+    //destructor
+    ~Customer() {}
 
     static int getTotalOrders() { return numberOfOrders; }
 
@@ -74,4 +78,6 @@ private:
 
 public:
     RestaurantOwner(string username, string password, string restaurant, int secret) : User(username, password, "RestaurantOwner"), restaurantName(restaurant), secretCode(secret) {}
+    //destructor
+    ~RestaurantOwner() {}
 };
