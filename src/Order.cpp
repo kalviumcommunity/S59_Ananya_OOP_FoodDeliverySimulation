@@ -9,12 +9,16 @@ private:
     string status;
 
 public:
+    //default constructor
     Order() {}
+    //parameterized constructor
     Order(int orderId, string orderDetails) {
         this->orderId = orderId;
         this->orderDetails = orderDetails;
         this->status = "Placed";
     }
+    //destructor
+    ~Order() {}
 
     void updateStatus(string newStatus) {
         status = newStatus;
