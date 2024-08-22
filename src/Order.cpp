@@ -3,12 +3,15 @@
 using namespace std;
 
 class Order {
-private:
+private: //private access specifier used
     int orderId;
+
+protected: //protected access specifier usedd
     string orderDetails;
     string status;
 
-public:
+public: //public access specifier used
+
     //default constructor
     Order() {}
     //parameterized constructor
