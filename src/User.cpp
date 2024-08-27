@@ -35,7 +35,8 @@ public:
     string getUsername() {return username;}
 };
 
-class Customer : public User {
+//hierarchial inheritance where multiple classes inherit from one class
+class Customer : public User {  //first class customer in herits from user
 private:
     vector<Order> orderHistory;
     static int orderCounter; //static member variable declaration
@@ -106,7 +107,8 @@ public:
 
 int Customer::orderCounter = 0; //static member initialization
 
-class RestaurantOwner : public User {
+//example of hierarchial inheritance, second class inheriting from the same base class
+class RestaurantOwner : public User { //second class restaurant owner inherits from the user class
 private:
     string restaurantName;
     int secretCode;

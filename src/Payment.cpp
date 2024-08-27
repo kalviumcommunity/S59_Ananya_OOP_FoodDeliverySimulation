@@ -27,7 +27,8 @@ public:
     virtual void processOnlinePayment() { }
 };
 
-class OnlinePayment : public Payment {
+//example of single inheritance
+class OnlinePayment : public Payment { //OnlinePayment class inherits from Payment class single handedly
 public:
     void processOnlinePayment() override {
         int choice;
