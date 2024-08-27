@@ -13,6 +13,7 @@ protected:
     string role;
 
 public:
+    //example of polymorphism - constructor overloading
     User(){} //default constructor
     User(string uname, string pwd, string r) : username(uname), password(pwd), role(r) {} //parameterized
     ~User(){} //destructor

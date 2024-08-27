@@ -24,13 +24,13 @@ public:
             cout << "Invalid payment choice" << endl;
         }
     }
-    virtual void processOnlinePayment() { }
+    virtual void processOnlinePayment() {} //example of polymorphism - method overriding
 };
 
 //example of single inheritance
 class OnlinePayment : public Payment { //OnlinePayment class inherits from Payment class single handedly
 public:
-    void processOnlinePayment() override {
+    void processOnlinePayment() override { //method overriding implemented here
         int choice;
         cout << "Choose online payment method:\n1. Debit Card\n2. PayPal\nEnter choice: ";
         cin >> choice;
