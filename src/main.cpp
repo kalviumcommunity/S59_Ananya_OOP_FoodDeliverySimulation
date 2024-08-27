@@ -1,79 +1,83 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <map>
+#include <algorithm>
 #include "User.cpp"
-#include "Order.cpp"
+#include "Payment.cpp"
 using namespace std;
 
 int main() { 
-  int n, role;
+    map<string, vector<string>> restaurants = { //list of all
+        {"Pasta Palace", {"Spaghetti", "Lasagne", "Macaroni Cheese"}},
+        {"Burger King", {"Classic Burger", "Cheese Burger", "Spicy Paneer Burger"}},
+        {"Pizza Hut", {"Margherita", "Pepperoni", "Paneer and Onion"}},
+        {"Sushi Town", {"Sashimi", "Temaki", "Salmon Nigiri"}},
+        {"Taco Bell", {"Classic Taco", "Paneer Taco", "Vegan Taco"}}
+    };
 
-  cout << "Welcome to this food delivery simulation!\nCreate an account to access all features" << endl;
+    //welcome message 
+    cout << "Welcome to the Virtual Food Delivery System! Create an account to access all features" << endl;
+    cout << "Choose your role:\n1. Customer\n2. Restaurant Owner\nEnter your choice: ";
+    int role; //to know who is trying to enter
+    cin >> role;
 
-  //this is to know who is trying to enter (customer or owner)
-  cout << "Choose your role:\n 1. Customer\n 2. Restaurant Owner\nEnter your choice: ";
-  cin >> role;
+    if (role == 1) {//for customer
+        string user, pass;
+        cout << "Create a username: ";
+        cin >> user;
+        cout << "Create a password: ";
+        cin >> pass;
+        Customer customer1(user, pass); //creating an account
+        customer1.login(); //verifying credentials
 
-  //if they are a customer
-  if (role == 1) {
-    string user, pass;
-    cout << "Enter username for Customer: ";
-    cin >> user;
-    cout << "Enter password for Customer: ";
-    cin >> pass;
+        while (true) {
+            int choice;
+            cout << "\n1. Browse Menu\n2. Place Order\n3. Track Order Status\n4. Exit\nEnter your choice: ";
+            cin >> choice;
 
-    //dynamically allocating memory
-    Customer* customer = new Customer(user, pass);
-    customer -> login();
-    customer -> displayUserDetails();
+            if (choice == 1) customer1.browseMenu(restaurants);
+            else if (choice == 2) {
+                customer1.placeOrder(restaurants);
+                Payment payment1;
+                payment1.processPayment();
+            } 
+            else if (choice == 3) customer1.trackOrderStatus();
+            else if (choice == 4) break; //end
+            else cout << "Invalid choice, please try again" << endl;//error
+        }
+    } 
     
-    cout << "Enter the number of orders: ";
-    cin >> n;
-    cin.ignore(); 
+    else if (role == 2) { //for restaurant owner
+        string user, pass, rest;
+        int code;
+        cout << "Create username for Restaurant Owner: "; //creating an account
+        cin >> user;
+        cout << "Create password for Restaurant Owner: ";
+        cin >> pass;
+        cout << "Enter your restaurant name: ";
+        cin.ignore();
+        getline(cin, rest);
+        cout << "Enter your secret code: "; //code for verification
+        cin >> code;
+        RestaurantOwner owner1(user, pass, rest, code);//creating an account
+        owner1.login(); //verifying credentials
 
-    Order* orders = new Order[n];
+        while (true) {
+            int choice;
+            cout << "\n1. View Menu \n2. Add Menu Item\n3. Exit\nEnter your choice: ";
+            cin >> choice;
 
-    for (int i = 0; i < n; ++i) {
-      string o;
-      cout << "Enter details for order " << (i + 1) << endl;
-      cout << "Order Details: ";
-      getline(cin, o);
-      orders[i] = Order(i + 1, o);
+            if (choice == 1) owner1.viewMenuItems(restaurants);
+            else if (choice == 2) owner1.addMenuItem(restaurants);
+            else if (choice == 3) break; //ending here
+            else cout << "Invalid choice, please try again" << endl; //error
+        }
+    } 
+
+    else {
+        cout << "Invalid role choice" << endl;
     }
-
-    cout << endl << "Order Details:" << endl;
-    for (int i = 0; i < n; ++i) {
-      orders[i].displayOrderDetails();
-    }
-
-    customer -> placeOrder();
-
-    //explicitly calling destructor r
-    delete[] orders;
-    delete customer;
-  }
-
-  //if they are an owner
-  else if (role == 2) {
-    string user, pass, restaurant;
-    int secret;
-    cout << "Enter username for Restaurant Owner: ";
-    cin >> user;
-    cout << "Enter password for Restaurant Owner: ";
-    cin >> pass;
-    cin.ignore();
-    cout << "Enter your restaurant name: ";
-    getline(cin, restaurant);
-    cout << "Enter your secret code: ";
-    cin >> secret;
-
-    //dynamically alloting memory
-    RestaurantOwner* owner = new RestaurantOwner(user, pass, restaurant, secret);
-    owner -> login();
-    owner -> displayUserDetails();
-
-    //explicitly calling destructor
-    delete owner;
-  }
 
   return 0;
 }

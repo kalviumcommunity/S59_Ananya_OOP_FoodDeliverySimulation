@@ -9,4 +9,3 @@ A Virtual Food Delivery System simulates the process of ordering food online, ma
 - Order Management
 - Payment Processing
 - Delivery Tracking
-- Customer Feedback

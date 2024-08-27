@@ -1,53 +1,36 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <map>
+#include <algorithm>
 using namespace std;
 
 class Order {
-private: //private access specifier used
+private:
     int orderId;
-
-protected: //protected access specifier usedd
-    string orderDetails;
+    string customerName;
+    string foodItem;
+    string restaurantName;
     string status;
 
-public: //public access specifier used
+public:
+    Order(){} //default constructor
+    //parameterised constructor
+    Order(int id, string cname, string rname, string item) : orderId(id), customerName(cname), restaurantName(rname), foodItem(item), status("Placed") {}
+    ~Order(){} //destructor
 
-    //default constructor
-    Order() {}
-    //parameterized constructor
-    Order(int orderId, string orderDetails) {
-        this->orderId = orderId;
-        this->orderDetails = orderDetails;
-        this->status = "Placed";
-    }
-    //destructor
-    ~Order() {}
-
-    //mutator(setter methods)
-    void updateStatus(string newStatus) {
+    void updateOrderStatus(string newStatus) {
         status = newStatus;
+        cout << "Order " << orderId << " status updated to: " << status << endl;
     }
-
-    void setOrderDetails(string details) {
-        orderDetails = details;
-    }
-
-    //accessors(getter methods))
-    string getOrderDetails() {
-        return orderDetails;
-    }
-
-    string getStatus() {
-        return status;
-    }
-
-    int getOrderId() {
-        return orderId;
-    }
-
+    //accessors(getter methods)
+    string getStatus() { return status; }
+    int getOrderId() { return orderId; }
+    string getFoodItem() { return foodItem; }
+    string getRestaurantName() { return restaurantName; }
     void displayOrderDetails() {
         cout << "Order ID: " << getOrderId() << endl;
-        cout << "Order Details: " << getOrderDetails() << endl;
+        cout << "Order Details: " << getFoodItem() << endl;
         cout << "Order Status: " << getStatus() << endl;
     }
 };

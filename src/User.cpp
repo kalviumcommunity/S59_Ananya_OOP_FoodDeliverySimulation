@@ -1,114 +1,147 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <map>
+#include <algorithm>
+#include "Order.cpp"
 using namespace std;
 
 class User {
-private:
+protected:
     string username;
     string password;
-
-protected:
     string role;
 
 public:
-    User(string username, string password, string role) {
-        this -> username = username;
-        this -> password = password;
-        this -> role = role;
-    }
-    //destructor
-    virtual ~User() {}
+    User(){} //default constructor
+    User(string uname, string pwd, string r) : username(uname), password(pwd), role(r) {} //parameterized
+    ~User(){} //destructor
 
-    virtual void displayUserDetails() const = 0;
-    virtual void login() = 0;
+    virtual void login() {
+        string inputUsername, inputPassword;
+        cout << "Enter username to login: ";
+        cin >> inputUsername;
+        cout << "Enter password to login: ";
+        cin >> inputPassword;
 
-    //mutator(setter methods)
-    void setPassword(string p) {
-        password = p;
+        if (inputUsername == username && inputPassword == password) cout << "Login successful! Logged in as: " << role << endl;
+        else {
+            cout << "Login failed! Incorrect username or password." << endl;
+            exit(0);
+        }
     }
-
-    void setUsername(string uname) {
-        username = uname;
-    }
-
-    //accessors(getter methods)
-    string getUsername() const {
-        return username;
-    }
-
-    string getPassword() const {
-        return password;
-    }
+    //accessors (getter methods)
+    string getRole() {return role;}
+    string getUsername() {return username;}
 };
 
 class Customer : public User {
 private:
-    static int orderCounter;
-    static int numberOfOrders;
+    vector<Order> orderHistory;
+    static int orderCounter; //static member variable declaration
+
 public:
-    Customer(string username, string password) : User(username, password, "Customer") {}
-    //destructor
-    ~Customer() {}
+    Customer(string uname, string pwd) : User(uname, pwd, "Customer") {}
 
-    //accessor(getter method)
-    static int getTotalOrders() { return numberOfOrders; }
-
-    void placeOrder() {
-        orderCounter++;
-        numberOfOrders++;
-        cout << "Order placed successfully! Total orders by all customers: " << getTotalOrders() << endl;
+    void browseMenu(map<string, vector<string>>& arr) {
+        cout << "Available Restaurants and their menus:" << endl;
+        int i = 1;
+        for (auto& a : arr) {
+            cout << i++ << ". " << a.first << "'s Menu:" << endl;
+            int j = 1;
+            for (auto& foodchoice : a.second) {
+                cout << "   " << j++ << ". " << foodchoice << endl;
+            }
+            cout << endl;
+        }
     }
 
-    void displayUserDetails() const override {
-        cout << "Customer Username: " << getUsername() << endl;
+    void placeOrder(map<string, vector<string>>& restaurants) {
+        int rest, foodchoice;
+        cout << "Choose a restaurant by number: ";
+        cin >> rest;
+
+        if (rest < 1 || rest > restaurants.size()) {
+            cout << "Invalid choice" << endl;
+            return;
+        }
+
+        int j = 1;
+        string restaurant;
+        for (auto& i : restaurants) {
+            if (j == rest) {
+                restaurant = i.first;
+                break;
+            }
+            j++;
+        }
+
+        cout << "Choose a food item by number from " << restaurant << "'s menu: ";
+        cin >> foodchoice;
+
+        if (foodchoice < 1 || foodchoice > restaurants[restaurant].size()) {
+            cout << "Invalid menu item choice" << endl;
+            return;
+        }
+
+        string item = restaurants[restaurant][foodchoice - 1];
+        cout << "Order placed for " << item << " from " << restaurant << endl;
+
+        Order newOrder(orderCounter++, username, restaurant, item);
+        orderHistory.push_back(newOrder);
     }
 
-    void login() override {
-        string user, pass;
-        cout << "Enter username to login: ";
-        cin >> user;
-        cout << "Enter password for verification: ";
-        cin >> pass;
+    void trackOrderStatus() {
+        if (orderHistory.empty()) {
+            cout << "No orders placed yet" << endl;
+            return;
+        }
 
-        if (user == getUsername() && pass == getPassword()) {
-            cout << "\nLogin successful! Logged in as " << role << endl;
-        } else {
-            cout << "\nLogin failed! Incorrect credential(s)" << endl;
-            exit(0);
+        cout << "Your Order History:" << endl;
+        for (auto& o : orderHistory) {
+            cout << "Order ID: " << o.getOrderId() << ", Restaurant: " << o.getRestaurantName() << ", Item: " << o.getFoodItem() << ", Status: " << o.getStatus() << endl;
         }
     }
 };
 
-int Customer :: orderCounter = 0;
-int Customer :: numberOfOrders = 0;
+int Customer::orderCounter = 0; //static member initialization
 
 class RestaurantOwner : public User {
 private:
-    int secretCode;
     string restaurantName;
+    int secretCode;
 
 public:
-    RestaurantOwner(string username, string password, string restaurant, int secret) : User(username, password, "RestaurantOwner"), restaurantName(restaurant), secretCode(secret) {}
-    //destructor
-    ~RestaurantOwner() {}
+    RestaurantOwner(string uname, string pwd, string restName, int sCode) : User(uname, pwd, "RestaurantOwner"), restaurantName(restName), secretCode(sCode) {}
 
-    void displayUserDetails() const override {
-        cout << "Restaurant Owner Username: " << getUsername() << endl;
-        cout << "Restaurant Name: " << restaurantName << endl;
+    bool verifySecretCode() {
+        int code;
+        cout << "Enter secret code: ";
+        cin >> code;
+        return code == secretCode;
     }
 
-    void login() override {
-        string user, pass;
-        cout << "Enter username to login: ";
-        cin >> user;
-        cout << "Enter password for verification: ";
-        cin >> pass;
-
-        if (user == getUsername() && pass == getPassword()) {
-            cout << "\nLogin successful! Logged in as " << role << endl;
-        } else {
-            cout << "\nLogin failed! Incorrect credential(s)" << endl;
-            exit(0);
+    void viewMenuItems(map<string, vector<string>>& restaurants) {
+        cout << "Menu items for " << restaurantName << ":" << endl;
+        int j = 1;
+        for (const auto& item : restaurants[restaurantName]) {
+            cout << j++ << ". " << item << endl;
         }
+        if (restaurants.size() == 0) {
+            cout << "No items were found" << endl;
+        }
+    }
+
+    void addMenuItem(map<string, vector<string>>& restaurants) {
+        if (verifySecretCode()) {
+            string item;
+            cout << "Enter menu item to add: ";
+            cin.ignore();
+            getline(cin, item);
+            restaurants[restaurantName].push_back(item);
+            cout << "Menu item " << item << " added to " << restaurantName << "'s menu" << endl;
+        } 
+        
+        else cout << "Secret code incorrect, can't add menu item" << endl;
     }
 };
