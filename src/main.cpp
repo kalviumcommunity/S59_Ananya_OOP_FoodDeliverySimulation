@@ -39,8 +39,15 @@ int main() {
             if (choice == 1) customer1.browseMenu(restaurants);
             else if (choice == 2) {
                 customer1.placeOrder(restaurants);
-                Payment payment1;
-                payment1.processPayment();
+                Payment* payment;
+                int paymentChoice;
+                cout << "Choose payment type:\n1. Cash on Delivery\n2. Online Payment\nEnter your choice: ";
+                cin >> paymentChoice;
+
+                if (paymentChoice == 2)payment = new OnlinePayment(); //for online payment
+                else payment = new Payment(); //for cash on delivery
+                payment->processPayment(paymentChoice); 
+                delete payment; 
             } 
             else if (choice == 3) customer1.trackOrderStatus();
             else if (choice == 4) break; //end
