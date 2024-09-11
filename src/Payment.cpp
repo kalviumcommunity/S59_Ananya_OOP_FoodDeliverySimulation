@@ -5,9 +5,6 @@
 #include <algorithm>
 using namespace std;
 
-//has use of SOLID principle 2
-//payment class is open to extension but closed to modification
-//if I need to add more methods, I can simply extend more classes from it without modifying the current one
 class Payment {
 public:
     virtual void processPayment(int choice) {
