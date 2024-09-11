@@ -5,8 +5,6 @@
 #include <algorithm>
 using namespace std;
 
-//SOLID principle 1 being used here
-//payment class only has 1 responsibility- to give user an interface to choose a payment method from
 class Payment {
 public:
     virtual void processPayment() {
